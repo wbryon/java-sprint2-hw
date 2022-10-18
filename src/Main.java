@@ -1,32 +1,37 @@
 import java.io.File;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private File getFileFromResources;
 
     public static void main(String[] args) {
+//        MonthlyReport report = new MonthlyReport();
+        ReadData readData = new ReadData("resources");
+//        for (String line : report.monthlyReport.keySet()) {
+//            System.out.println(line + ": " + report.monthlyReport.get(line));
+//        }
         int command;
-        Scanner scanner = new Scanner(System.in);
-        ReadData reader = new ReadData("resources/m.202101.csv");
-        while (true) {
-            printMenu();
-            command = scanner.nextInt();
-            if (command == 1) {
-
-            } else if (command == 2) {
-
-            } else if (command == 3) {
-
-            } else if (command == 4) {
-
-            } else if (command == 5) {
-
-            } else if (command == 0) {
-                break;
-            } else {
-                System.out.println("Такой команды в меню нет");
-            };
-        }
+//        Scanner scanner = new Scanner(System.in);
+//        while (true) {
+//            printMenu();
+//            command = scanner.nextInt();
+//            if (command == 1) {
+//
+//            } else if (command == 2) {
+//
+//            } else if (command == 3) {
+//
+//            } else if (command == 4) {
+//
+//            } else if (command == 5) {
+//
+//            } else if (command == 0) {
+//                break;
+//            } else {
+//                System.out.println("Такой команды в меню нет");
+//            };
+//        }
     }
 
     static void printMenu() {

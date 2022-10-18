@@ -1,18 +1,34 @@
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.util.*;
 
 public class ReadData {
-    private String path;
     public ReadData(String path) {
-        this.path = path;
-        readFileContentsOrNull(path);
+        readFileContentsOrNull(getPathToMonthlyReports(Path.of(path)));
     }
-
-    private String readFileContentsOrNull(String path) {
+    private List<List<String>> readFileContentsOrNull(ArrayList<String> source) { // Метод, считывающий содержимое месячного отчёта
+        List<List<String>> monthReports = new ArrayList<>();
         try {
-            System.out.println(Files.readString(Path.of(path)));
-            return Files.readString(Path.of(path));
+            for (String path : source) {
+                monthReports.add(Arrays.asList(Files.readString(Path.of(path)).split("\r?\n")));
+            }
+            return monthReports;
+        } catch (IOException e) {
+            System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
+            return null;
+        }
+    }
+    private ArrayList<String> getPathToMonthlyReports(Path pathToFile) {
+        ArrayList<String> pathToMonthlyReports = new ArrayList<>();
+        Path path = Path.of(String.valueOf(pathToFile));
+        try (DirectoryStream<Path> files = Files.newDirectoryStream(path)) {
+            for (Path fileName : files) {
+                if (fileName.toString().startsWith("resources/m")) {
+                    pathToMonthlyReports.add(fileName.toString());
+                }
+            }
+            Collections.sort(pathToMonthlyReports);
+            return pathToMonthlyReports;
         } catch (IOException e) {
             System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
             return null;
