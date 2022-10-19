@@ -6,30 +6,27 @@ public class Main {
 
     public static void main(String[] args) {
         MonthlyReport report = new MonthlyReport();
-//        for (String line : report.monthlyReport.keySet()) {
-//            System.out.println(line + ": " + report.monthlyReport.get(line));
-//        }
         int command;
-//        Scanner scanner = new Scanner(System.in);
-//        while (true) {
-//            printMenu();
-//            command = scanner.nextInt();
-//            if (command == 1) {
-//
-//            } else if (command == 2) {
-//
-//            } else if (command == 3) {
-//
-//            } else if (command == 4) {
-//
-//            } else if (command == 5) {
-//
-//            } else if (command == 0) {
-//                break;
-//            } else {
-//                System.out.println("Такой команды в меню нет");
-//            };
-//        }
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            printMenu();
+            command = scanner.nextInt();
+            if (command == 1) {
+                report.printMonthReports();
+            } else if (command == 2) {
+
+            } else if (command == 3) {
+
+            } else if (command == 4) {
+
+            } else if (command == 5) {
+
+            } else if (command == 0) {
+                break;
+            } else {
+                System.out.println("Такой команды в меню нет");
+            };
+        }
     }
 
     static void printMenu() {
