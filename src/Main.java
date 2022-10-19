@@ -3,11 +3,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private File getFileFromResources;
 
     public static void main(String[] args) {
-//        MonthlyReport report = new MonthlyReport();
-        ReadData readData = new ReadData("resources");
+        MonthlyReport report = new MonthlyReport();
 //        for (String line : report.monthlyReport.keySet()) {
 //            System.out.println(line + ": " + report.monthlyReport.get(line));
 //        }
