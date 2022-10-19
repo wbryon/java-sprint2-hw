@@ -1,5 +1,3 @@
-import java.io.IOException;
-import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -16,36 +14,47 @@ public class MonthlyReport {
         monthlyReport.put("Март", marchReport);
     }
 
-    public void printMonthReports() {
+    public void printMonthlyReport() {   // метод для печати информации о месяце
         for (String key : monthlyReport.keySet()) {
-            System.out.println(key + "\n" + getMostProfitableProduct(monthlyReport.get(key)) + "\n");
+            System.out.println(key + "\n" + getMostProfitableProduct(monthlyReport.get(key)));
+            System.out.println(getBiggestExpense(monthlyReport.get(key)) + "\n");
         }
     }
-    public String getMostProfitableProduct(ReadMonthData data) {
+    private String getMostProfitableProduct(ReadMonthData data) {    // метод, выводящий информацию о самом прибыльном товаре
         int mostProfitableProduct = 0;
-        String curItemName = "";
-        String bestSeller = "";
+        String itemName = "";
         for (int i = 0; i < data.itemName.size(); i++) {
             int curProfitableProduct = data.quantity.get(i) * data.sumOfOne.get(i);
             if (data.isExpense.get(i).equals(false) && curProfitableProduct > mostProfitableProduct) {
                 mostProfitableProduct = curProfitableProduct;
-                curItemName = data.itemName.get(i);
+                itemName = data.itemName.get(i);
             }
         }
-        bestSeller = curItemName + " на сумму " + String.valueOf(mostProfitableProduct) + " рублей";
-        return bestSeller;
+        return itemName + " на сумму " + mostProfitableProduct + " рублей";
     }
-    public void getBiggestWaste() {}
-
-    private class ReadMonthData {
-        public ReadMonthData(String source) {
-            parseLinesFromFile(readFileContentsOrNull(source));
+    private String getBiggestExpense(ReadMonthData data) {   // метод, выводящий самую большую трату за месяц
+        int biggestExpense = 0;
+        String itemName = "";
+        for (int i = 0; i < data.itemName.size(); i++) {
+            int curExpensiveProduct = data.quantity.get(i) * data.sumOfOne.get(i);
+            if (data.isExpense.get(i).equals(true) && curExpensiveProduct > biggestExpense) {
+                biggestExpense = curExpensiveProduct;
+                itemName = data.itemName.get(i);
+            }
         }
-        private List<String> itemName = new ArrayList<>();
-        private List<Boolean> isExpense = new ArrayList<>();
-        private List<Integer> quantity = new ArrayList<>();
-        private List<Integer> sumOfOne = new ArrayList<>();
-        private void parseLinesFromFile(List<String> file) {
+        return itemName + " на сумму " + biggestExpense + " рублей";
+    }
+
+    private static class ReadMonthData {    // внутренний класс, хранящий всю информацию за месяц
+        public ReadMonthData(String source) {
+            Auxiliary getPath = new Auxiliary(source);
+            parseLinesFromFile(getPath.readFileContentsOrNull(source));
+        }
+        private final List<String> itemName = new ArrayList<>();
+        private final List<Boolean> isExpense = new ArrayList<>();
+        private final List<Integer> quantity = new ArrayList<>();
+        private final List<Integer> sumOfOne = new ArrayList<>();
+        private void parseLinesFromFile(List<String> file) {    // метод, обрабатывающий значения из месячного отчёта
 
             for (String line : file.subList(1, file.size())) {
                 String[] lines = line.split(",");
@@ -55,36 +64,5 @@ public class MonthlyReport {
                 sumOfOne.add(Integer.parseInt(lines[3]));
             }
         }
-        private List<String> readFileContentsOrNull(String source) { // Метод, считывающий содержимое месячного отчёта
-            List<String> currentMonthReport = new ArrayList<>();
-            try {
-                String[] lines = Files.readString(Path.of(source)).split("\r?\n");
-                for (String line : lines) {
-                    currentMonthReport.add(line);
-                }
-                return currentMonthReport;
-            } catch (IOException e) {
-                System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
-                return null;
-            }
-        }
-
-//        private ArrayList<String> getPathToMonthlyReports() {
-//            ArrayList<String> pathToMonthlyReports = new ArrayList<>();
-//            Path path = Path.of("resources");
-//            try (DirectoryStream<Path> files = Files.newDirectoryStream(path)) {
-//                for (Path fileName : files) {
-//                    if (fileName.toString().startsWith("resources/m")) {
-//                        pathToMonthlyReports.add(fileName.toString());
-//                    }
-//                }
-//                Collections.sort(pathToMonthlyReports);
-//                return pathToMonthlyReports;
-//            } catch (IOException e) {
-//                System.out.println("Что-то пошло не так");
-//                return null;
-//            }
-//        }
-
     }
 }

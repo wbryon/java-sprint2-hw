@@ -1,35 +1,51 @@
-import java.io.File;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
-        MonthlyReport report = new MonthlyReport();
+        MonthlyReport monthlyReport = null;
+        YearlyReport yearlyReport = null;
         int command;
         Scanner scanner = new Scanner(System.in);
+        label:
         while (true) {
             printMenu();
             command = scanner.nextInt();
-            if (command == 1) {
-                report.printMonthReports();
-            } else if (command == 2) {
+            switch (command) {
+                case 1:
+                    monthlyReport = new MonthlyReport();
+                    break;
+                case 2:
+                    yearlyReport = new YearlyReport();
+                    break;
+                case 3:
 
-            } else if (command == 3) {
-
-            } else if (command == 4) {
-
-            } else if (command == 5) {
-
-            } else if (command == 0) {
-                break;
-            } else {
-                System.out.println("Такой команды в меню нет");
-            };
+                    break;
+                case 4:
+                    try {
+                        assert monthlyReport != null;
+                        monthlyReport.printMonthlyReport();
+                    } catch (NullPointerException exception) {
+                        System.out.println("Сначала считайте месячные отчёты!\n");
+                    }
+                    break;
+                case 5:
+                    try {
+                        assert yearlyReport != null;
+                        yearlyReport.printYearlyReport();
+                    } catch (NullPointerException exception) {
+                        System.out.println("Сначала считайте годовой отчёт!\n");
+                    }
+                    break;
+                case 0:
+                    break label;
+                default:
+                    System.out.println("Такой команды в меню нет");
+                    break;
+            }
         }
     }
 
-    static void printMenu() {
+    static void printMenu() {   // метод для ввода команд из консоли
         System.out.println("1 - Считать все месячные отчёты");
         System.out.println("2 - Считать годовой отчёт");
         System.out.println("3 - Сверить отчёты");
