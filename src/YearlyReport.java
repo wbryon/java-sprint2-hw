@@ -31,7 +31,7 @@ public class YearlyReport {
             }
         }
     }
-    public void printYearlyReport() {   // метод для печати информации о годе
+    public void printYearlyReport() {   // метод для печати информации о годовом отчёте
         System.out.println("Прибыль за " + path.replaceAll("\\D+","") + " год по месяцам \n");
         for (int i = 0; i < months.size(); i++) {
             System.out.println(months.get(i) + ": " + (monthProfit.get(i) - monthExpense.get(i)));

@@ -18,7 +18,12 @@ public class Main {
                     yearlyReport = new YearlyReport();
                     break;
                 case 3:
-
+                    try {
+                        assert monthlyReport != null;
+                        monthlyReport.reconciliationOfReports();
+                    } catch (NullPointerException exception) {
+                        System.out.println("Сначала считайте месячные отчёты!\n");
+                    }
                     break;
                 case 4:
                     try {

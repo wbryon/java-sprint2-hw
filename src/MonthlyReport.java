@@ -1,22 +1,49 @@
 import java.util.*;
 
+
 /**
  * Класс, предоставляющий месячный отчёт, содержащий данные о доходах и расходах в рамках одного календарного месяца
  */
 public class MonthlyReport {
+    YearlyReport yearlyReport = new YearlyReport();
+    List<String> months = List.of("Январь", "Февраль", "Март");
     ReadMonthData januaryReport = new ReadMonthData("resources/m.202101.csv");
     ReadMonthData februaryReport = new ReadMonthData("resources/m.202102.csv");
     ReadMonthData marchReport = new ReadMonthData("resources/m.202103.csv");
-    Map<String, ReadMonthData> monthlyReport = new HashMap<>();
+    Map<Integer, ReadMonthData> monthlyReport = new HashMap<>();
     public MonthlyReport() {
-        monthlyReport.put("Январь", januaryReport);
-        monthlyReport.put("Февраль", februaryReport);
-        monthlyReport.put("Март", marchReport);
+        monthlyReport.put(0, januaryReport);
+        monthlyReport.put(1, februaryReport);
+        monthlyReport.put(2, marchReport);
     }
 
+    public void reconciliationOfReports() {   // метод проверяющий, что информация по месяцу в годовом отчёте не противоречит информации в месячном отчёте
+        int errorCount = 0;
+        for (Integer key : monthlyReport.keySet()) {
+            int monthProfit = 0;
+            int monthExpense = 0;
+            for (int i = 0; i < monthlyReport.get(key).itemName.size(); i++) {
+                if (monthlyReport.get(key).isExpense.get(i).equals(false)) {
+                    monthProfit += monthlyReport.get(key).quantity.get(i) * monthlyReport.get(key).sumOfOne.get(i);
+                } else if (monthlyReport.get(key).isExpense.get(i).equals(true)) {
+                    monthExpense += monthlyReport.get(key).quantity.get(i) * monthlyReport.get(key).sumOfOne.get(i);
+                }
+            }
+            if (monthProfit != yearlyReport.monthProfit.get(key)) {
+                System.out.println(months.get(key) + ": обнаружено несоответствие в доходах!");
+                errorCount++;
+            } else if (monthExpense != yearlyReport.monthExpense.get(key)) {
+                System.out.println(months.get(key) + ": обнаружено несоответствие в расходах!");
+                errorCount++;
+            }
+        }
+        if (errorCount == 0) {
+            System.out.println("Сверка отчётов успешно завершена\n");
+        }
+    }
     public void printMonthlyReport() {   // метод для печати информации о месяце
-        for (String key : monthlyReport.keySet()) {
-            System.out.println(key + "\n" + getMostProfitableProduct(monthlyReport.get(key)));
+        for (Integer key : monthlyReport.keySet()) {
+            System.out.println(months.get(key) + "\n" + getMostProfitableProduct(monthlyReport.get(key)));
             System.out.println(getBiggestExpense(monthlyReport.get(key)) + "\n");
         }
     }
