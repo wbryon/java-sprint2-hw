@@ -1,19 +1,18 @@
 import java.util.*;
 
-
 /**
  * Класс, предоставляющий месячный отчёт, содержащий данные о доходах и расходах в рамках одного календарного месяца
  */
 public class MonthlyReport {
     private final YearlyReport yearlyReport = new YearlyReport();
-    List<String> months = List.of("Январь", "Февраль", "Март");
-    ReadMonthData januaryReport = new ReadMonthData("resources/m.202101.csv");
-    ReadMonthData februaryReport = new ReadMonthData("resources/m.202102.csv");
-    ReadMonthData marchReport = new ReadMonthData("resources/m.202103.csv");
-    Map<Integer, ReadMonthData> monthlyReport = new HashMap<>();
+    private final List<String> months = List.of("Январь", "Февраль", "Март");
+    private final Map<Integer, ReadMonthData> monthlyReport = new HashMap<>();
     public MonthlyReport() {
+        ReadMonthData januaryReport = new ReadMonthData("resources/m.202101.csv");
         monthlyReport.put(0, januaryReport);
+        ReadMonthData februaryReport = new ReadMonthData("resources/m.202102.csv");
         monthlyReport.put(1, februaryReport);
+        ReadMonthData marchReport = new ReadMonthData("resources/m.202103.csv");
         monthlyReport.put(2, marchReport);
     }
 
@@ -44,13 +43,21 @@ public class MonthlyReport {
             System.out.println("Сверка отчётов успешно завершена\n");
         }
     }
-    public void printMonthlyReport() {   // метод для печати информации о месяце
+
+    /**
+     * метод для печати информации о месяце
+     */
+    public void printMonthlyReport() {
         for (Integer key : monthlyReport.keySet()) {
             System.out.println(months.get(key) + "\n" + getMostProfitableProduct(monthlyReport.get(key)));
             System.out.println(getBiggestExpense(monthlyReport.get(key)) + "\n");
         }
     }
-    private String getMostProfitableProduct(ReadMonthData data) {    // метод, выводящий информацию о самом прибыльном товаре
+
+    /**
+     * метод, выводящий информацию о самом прибыльном товаре
+     */
+    private String getMostProfitableProduct(ReadMonthData data) {
         int mostProfitableProduct = 0;
         String itemName = "";
         for (int i = 0; i < data.itemName.size(); i++) {
@@ -62,7 +69,11 @@ public class MonthlyReport {
         }
         return itemName + " на сумму " + mostProfitableProduct + " рублей";
     }
-    private String getBiggestExpense(ReadMonthData data) {   // метод, выводящий самую большую трату за месяц
+
+    /**
+     * метод, выводящий самую большую трату за месяц
+     */
+    private String getBiggestExpense(ReadMonthData data) {
         int biggestExpense = 0;
         String itemName = "";
         for (int i = 0; i < data.itemName.size(); i++) {
@@ -75,7 +86,10 @@ public class MonthlyReport {
         return itemName + " на сумму " + biggestExpense + " рублей";
     }
 
-    private static class ReadMonthData {    // внутренний класс, хранящий всю информацию за месяц
+    /**
+     * Статический вложенный класс, хранящий всю информацию за месяц
+     */
+    private static class ReadMonthData {
         public ReadMonthData(String source) {
             try {
                 parseLinesFromFile(Auxiliary.util(source));
@@ -87,7 +101,11 @@ public class MonthlyReport {
         private final List<Boolean> isExpense = new ArrayList<>();
         private final List<Integer> quantity = new ArrayList<>();
         private final List<Integer> sumOfOne = new ArrayList<>();
-        private void parseLinesFromFile(List<String> file) {    // метод, обрабатывающий значения из месячного отчёта
+
+        /**
+         * метод, получающий значения из строк месячного отчёта
+         */
+        private void parseLinesFromFile(List<String> file) {
 
             for (String line : file.subList(1, file.size())) {
                 String[] lines = line.split(",");

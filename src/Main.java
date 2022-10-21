@@ -1,6 +1,13 @@
 import java.util.Scanner;
 
+/**
+ * Класс, исполняющий программу
+ * @author  Хабибула Тамирбудаев
+ */
 public class Main {
+    /**
+     * точка входа в программу
+     */
     public static void main(String[] args) {
         MonthlyReport monthlyReport = null;
         YearlyReport yearlyReport = null;
@@ -50,7 +57,10 @@ public class Main {
         }
     }
 
-    static void printMenu() {   // метод для ввода команд из консоли
+    /**
+     * метод для ввода команд из консоли
+     */
+    static void printMenu() {
         System.out.println("1 - Считать все месячные отчёты");
         System.out.println("2 - Считать годовой отчёт");
         System.out.println("3 - Сверить отчёты");

@@ -10,7 +10,10 @@ public class Auxiliary {
         util(path);
     }
 
-    public static List<String> util(String source) { // Метод, считывающий содержимое отчёта
+    /**
+     * Метод, считывающий содержимое отчёта
+     */
+    public static List<String> util(String source) {
         List<String> currentReport = new ArrayList<>();
         try {
             String[] lines = Files.readString(Path.of(source)).split("\r?\n");
