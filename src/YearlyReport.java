@@ -10,10 +10,13 @@ public class YearlyReport {
     List<Integer> monthProfit = new ArrayList<>();
     List<Integer> monthExpense = new ArrayList<>();
     private final String path = "resources/y.2021.csv";
-    Auxiliary getPath = new Auxiliary(path);
 
     public YearlyReport() {
-        parseLinesFromFile(getPath.readFileContentsOrNull(path));
+        try {
+            parseLinesFromFile(Auxiliary.util(path));
+        } catch (NullPointerException exception) {
+            System.out.println("Невозможно прочитать файл с годовым отчётом. Возможно, файл не находится в нужной директории.");
+        }
     }
     private void parseLinesFromFile(List<String> file) {    // метод, обрабатывающий значения из годового отчёта
         for (String line : file.subList(1, file.size())) {

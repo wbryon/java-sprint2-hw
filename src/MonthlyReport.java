@@ -5,7 +5,7 @@ import java.util.*;
  * Класс, предоставляющий месячный отчёт, содержащий данные о доходах и расходах в рамках одного календарного месяца
  */
 public class MonthlyReport {
-    YearlyReport yearlyReport = new YearlyReport();
+    private final YearlyReport yearlyReport = new YearlyReport();
     List<String> months = List.of("Январь", "Февраль", "Март");
     ReadMonthData januaryReport = new ReadMonthData("resources/m.202101.csv");
     ReadMonthData februaryReport = new ReadMonthData("resources/m.202102.csv");
@@ -17,7 +17,10 @@ public class MonthlyReport {
         monthlyReport.put(2, marchReport);
     }
 
-    public void reconciliationOfReports() {   // метод проверяющий, что информация по месяцу в годовом отчёте не противоречит информации в месячном отчёте
+    /**
+     * метод проверяющий, что информация по месяцу в годовом отчёте не противоречит информации в месячном отчёте
+     */
+    public void reconciliationOfReports() {
         int errorCount = 0;
         for (Integer key : monthlyReport.keySet()) {
             int monthProfit = 0;
@@ -74,8 +77,11 @@ public class MonthlyReport {
 
     private static class ReadMonthData {    // внутренний класс, хранящий всю информацию за месяц
         public ReadMonthData(String source) {
-            Auxiliary getPath = new Auxiliary(source);
-            parseLinesFromFile(getPath.readFileContentsOrNull(source));
+            try {
+                parseLinesFromFile(Auxiliary.util(source));
+            } catch (NullPointerException exception) {
+                System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
+            }
         }
         private final List<String> itemName = new ArrayList<>();
         private final List<Boolean> isExpense = new ArrayList<>();
